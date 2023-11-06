@@ -10,8 +10,9 @@ pipeline{
         
         stage("build and push to dockerhub"){
             steps{
-                sh 'docker build . -t mrunali23/node-todo-app:latest'
+                sh 'docker build . -t node-todo-app'
                 withCredentials([usernamePassword(credentialsId:"dockerhub",passwordVariable:"dockerhubPassword",usernameVariable:"dockerhubUsername")]){
+                    sh "docker tag node-todo-app ${env.dockerhubUsername}/node-todo-app:latest "
                     sh "docker login -u ${env.dockerhubUsername} -p ${env.dockerhubPassword}"
                     sh "docker push mrunali23/node-todo-app:latest"
                 }
